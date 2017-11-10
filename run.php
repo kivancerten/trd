@@ -41,12 +41,11 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
         $sellAmount = $btcBalance / $sellPrice;
         echo  'Sell amount: ' . $sellAmount . PHP_EOL;
 
-        /*
         $sellResult = $tradingBot->sell($sellPrice, $sellAmount);
         if ($sellResult) {
             echo 'Sell order success orderNumber: ' . $sellResult;
         }
-        */
+
     }
 
 } elseif ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_SELL) {
