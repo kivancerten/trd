@@ -13,7 +13,7 @@ $tradingClient = new TradingClient(
     SECRET_KEY
 );
 
-$tradingBot = new TradingBot($tradingClient, 'USDT_BTC');
+$tradingBot = new TradingBot($tradingClient, 'USDT_BCH');
 
 $tradingBot->determineLastTrade();
 $tradingBot->fetchCurrentPrices();
