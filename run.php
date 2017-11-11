@@ -13,13 +13,13 @@ $tradingClient = new TradingClient(
     SECRET_KEY
 );
 
-$tradingBot = new TradingBot($tradingClient);
+$tradingBot = new TradingBot($tradingClient, 'USDT_BTC');
 
 $tradingBot->determineLastTrade();
 $tradingBot->fetchCurrentPrices();
 
 echo 'USD Balance: ' . $usdBalance = $tradingBot->returnUSDBalance() . PHP_EOL;
-echo 'BTC Balance: ' .  $btcBalance = $tradingBot->returnBTCBalance() . PHP_EOL;
+echo 'COIN Balance: ' .  $btcBalance = $tradingBot->returnCoinBalance() . PHP_EOL;
 echo 'Last trade price: ' . $lastTradePrice = $tradingBot->getLastTradeRate() . PHP_EOL;
 echo 'Last trade type: ' . $tradingBot->getLastTradeType() . PHP_EOL;
 echo 'Trading fee: ' . $tradingFee = $tradingBot->returnTradingFee() . PHP_EOL;

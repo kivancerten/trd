@@ -20,14 +20,18 @@ class TradingBot
     private $lowestAsk;
     /** @var float */
     private $highestBid;
+    /** @var string */
+    private $currencyPair;
 
     /**
      * TradingBot constructor.
      * @param TradingClient $tradingClient
+     * @param string $currencyPair
      */
-    public function __construct(TradingClient $tradingClient)
+    public function __construct(TradingClient $tradingClient, $currencyPair)
     {
         $this->tradingClient = $tradingClient;
+        $this->currencyPair = $currencyPair;
     }
 
     /**
@@ -36,16 +40,6 @@ class TradingBot
     public function returnTradingFee()
     {
         return (float)$this->tradingClient->returnFeeInfo()['takerFee'];
-    }
-
-    public function returnOpenUSDOrders()
-    {
-        return $this->tradingClient->returnOpenOrders('USDT_BTC');
-    }
-
-    public function returnOpenBTCOrders()
-    {
-        return $this->tradingClient->returnOpenOrders('BTC_USDT');
     }
 
     private function fetchBalances()
@@ -61,21 +55,21 @@ class TradingBot
     public function returnUSDBalance()
     {
         $this->fetchBalances();
-        return (float)$this->balances['USDT'];
+        return (float)$this->balances[explode('_', $this->currencyPair)[0]];
     }
 
     /**
      * @return float
      */
-    public function returnBTCBalance()
+    public function returnCoinBalance()
     {
         $this->fetchBalances();
-        return (float)$this->balances['BTC'];
+        return (float)$this->balances[explode('_', $this->currencyPair)[1]];
     }
 
     public function determineLastTrade()
     {
-        $lastTrade = $this->tradingClient->returnTradeHistory('USDT_BTC', 1)[0];
+        $lastTrade = $this->tradingClient->returnTradeHistory($this->currencyPair, 1)[0];
 
         $this->lastTradeRate = (float)$lastTrade['rate'];
         $this->lastTradeType = $lastTrade['type'] == static::TRADE_TYPE_BUY ? static::TRADE_TYPE_BUY : static::TRADE_TYPE_SELL;
@@ -99,7 +93,7 @@ class TradingBot
 
     public function fetchCurrentPrices()
     {
-        $priceObject = $this->tradingClient->returnPublicPrices('USDT_BTC');
+        $priceObject = $this->tradingClient->returnPublicPrices($this->currencyPair);
         $this->lowestAsk = (float)$priceObject->lowestAsk;
         $this->highestBid = (float)$priceObject->highestBid;
     }
@@ -127,7 +121,7 @@ class TradingBot
      */
     public function buy($rate, $amount)
     {
-        $result = $this->tradingClient->buy('USDT_BTC', $rate, $amount);
+        $result = $this->tradingClient->buy($this->currencyPair, $rate, $amount);
 
         if (isset($result['orderNumber'])) {
             return $result['orderNumber'];
@@ -143,7 +137,7 @@ class TradingBot
      */
     public function sell($rate, $amount)
     {
-        $result = $this->tradingClient->buy('USDT_BTC', $rate, $amount);
+        $result = $this->tradingClient->buy($this->currencyPair, $rate, $amount);
 
         if (isset($result['orderNumber'])) {
             return $result['orderNumber'];
