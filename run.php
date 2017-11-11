@@ -1,8 +1,8 @@
 <?php
 namespace TradingBot;
 
-define('BUY_PERCENT_LIMIT', 0.45);
-define('SELL_PERCENT_LIMIT', 0.45);
+define('BUY_PERCENT_LIMIT', 0.35);
+define('SELL_PERCENT_LIMIT', 0.35);
 
 include_once 'secrets.php';
 include_once 'TradingClient.php';
@@ -70,3 +70,5 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
 
     }
 }
+
+echo PHP_EOL;
