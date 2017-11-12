@@ -3,6 +3,7 @@ namespace TradingBot;
 
 define('BUY_PERCENT_LIMIT', 0.15);
 define('SELL_PERCENT_LIMIT', 0.15);
+define('DRY_RUN', true);
 
 include_once 'secrets.php';
 include_once 'TradingClient.php';
@@ -41,9 +42,11 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
         $sellAmount = $btcBalance / $sellPrice;
         echo  'Sell amount: ' . $sellAmount . PHP_EOL;
 
-        $sellResult = $tradingBot->sell($sellPrice, $sellAmount);
-        if ($sellResult) {
-            echo 'Sell order success orderNumber: ' . $sellResult;
+        if (! DRY_RUN) {
+            $sellResult = $tradingBot->sell($sellPrice, $sellAmount);
+            if ($sellResult) {
+                echo 'Sell order success orderNumber: ' . $sellResult;
+            }
         }
 
     }
@@ -63,9 +66,11 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
         $buyAmount = floor($usdBalance) / $buyPrice;
         echo 'Buy amount: ' . $buyAmount . PHP_EOL;
 
-        $buyResult = $tradingBot->buy($buyPrice, $buyAmount);
-        if ($buyResult) {
-            echo 'Buy order success orderNumber: ' . $buyResult;
+        if (! DRY_RUN) {
+            $buyResult = $tradingBot->buy($buyPrice, $buyAmount);
+            if ($buyResult) {
+                echo 'Buy order success orderNumber: ' . $buyResult;
+            }
         }
 
     }
