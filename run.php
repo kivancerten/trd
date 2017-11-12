@@ -1,8 +1,8 @@
 <?php
 namespace TradingBot;
 
-define('BUY_PERCENT_LIMIT', 0.35);
-define('SELL_PERCENT_LIMIT', 0.35);
+define('BUY_PERCENT_LIMIT', 0.15);
+define('SELL_PERCENT_LIMIT', 0.15);
 
 include_once 'secrets.php';
 include_once 'TradingClient.php';
@@ -13,7 +13,7 @@ $tradingClient = new TradingClient(
     SECRET_KEY
 );
 
-$tradingBot = new TradingBot($tradingClient, 'USDT_BCH');
+$tradingBot = new TradingBot($tradingClient, 'USDT_BTC');
 
 $tradingBot->determineLastTrade();
 $tradingBot->fetchCurrentPrices();
