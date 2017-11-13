@@ -39,7 +39,7 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
     echo 'ProfitPercent: ' . $profitPercent . PHP_EOL;
 
     if ($profitPercent >= SELL_PERCENT_LIMIT) {
-        $sellAmount = $btcBalance / $sellPrice;
+        $sellAmount = round($btcBalance / $sellPrice, 6, PHP_ROUND_HALF_DOWN);
         echo  'Sell amount: ' . $sellAmount . PHP_EOL;
 
         if (! DRY_RUN) {
@@ -63,7 +63,7 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
     echo 'ProfitPercent: ' . $profitPercent . PHP_EOL;
 
     if ($profitPercent >= BUY_PERCENT_LIMIT) {
-        $buyAmount = floor($usdBalance) / $buyPrice;
+        $buyAmount = round($usdBalance / $buyPrice, 4, PHP_ROUND_HALF_DOWN);
         echo 'Buy amount: ' . $buyAmount . PHP_EOL;
 
         if (! DRY_RUN) {
