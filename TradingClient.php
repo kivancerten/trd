@@ -84,7 +84,13 @@ class TradingClient
      */
     public function returnBalances()
     {
-        return $this->query(['command' => 'returnBalances']);
+        $response = $this->query(['command' => 'returnBalances']);
+        return array_filter(
+            $response,
+            function ($value) {
+                return (float)$value > 0;
+            }
+        );
     }
 
     /**
