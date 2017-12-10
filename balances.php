@@ -10,6 +10,8 @@ $tradingClient = new TradingClient(
     SECRET_KEY
 );
 
+echo 'Date: ' . date('c') . PHP_EOL;
+
 try {
     $response = $tradingClient->returnBalances();
 

@@ -22,6 +22,10 @@ class TradingBot
     private $highestBid;
     /** @var string */
     private $currencyPair;
+    /** @var string */
+    private $baseCurrency = '';
+    /** @var string */
+    private $counterCurrency = '';
 
     /**
      * TradingBot constructor.
@@ -32,6 +36,7 @@ class TradingBot
     {
         $this->tradingClient = $tradingClient;
         $this->currencyPair = $currencyPair;
+        $this->explodeCurrencyPair();
     }
 
     /**
@@ -42,6 +47,11 @@ class TradingBot
         return (float)$this->tradingClient->returnFeeInfo()['takerFee'];
     }
 
+    public function clearBalances()
+    {
+        $this->balances = array();
+    }
+
     private function fetchBalances()
     {
         if (empty($this->balances)) {
@@ -49,22 +59,49 @@ class TradingBot
         }
     }
 
-    /**
-     * @return float
-     */
-    public function returnUSDBalance()
+    private function explodeCurrencyPair()
     {
-        $this->fetchBalances();
-        return (float)$this->balances[explode('_', $this->currencyPair)[0]];
+        $this->baseCurrency = explode('_', $this->currencyPair)[0];
+        $this->counterCurrency = explode('_', $this->currencyPair)[1];
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseCurrency()
+    {
+        return $this->baseCurrency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCounterCurrency()
+    {
+        return $this->counterCurrency;
     }
 
     /**
      * @return float
      */
-    public function returnCoinBalance()
+    public function returnBaseCurrencyBalance()
     {
         $this->fetchBalances();
-        return (float)$this->balances[explode('_', $this->currencyPair)[1]];
+        return (float)$this->balances[$this->baseCurrency];
+    }
+
+    /**
+     * @return float
+     */
+    public function returnCounterCurrencyBalance()
+    {
+        $this->fetchBalances();
+
+        if (isset($this->balances[$this->counterCurrency])) {
+            return (float)$this->balances[$this->counterCurrency];
+        }
+
+        return 0.0;
     }
 
     public function determineLastTrade()
@@ -125,6 +162,8 @@ class TradingBot
 
         if (isset($result['orderNumber'])) {
             return $result['orderNumber'];
+        } else {
+            var_dump($this->currencyPair, $rate, $amount, $result);
         }
 
         return false;
@@ -137,10 +176,12 @@ class TradingBot
      */
     public function sell($rate, $amount)
     {
-        $result = $this->tradingClient->buy($this->currencyPair, $rate, $amount);
+        $result = $this->tradingClient->sell($this->currencyPair, $rate, $amount);
 
         if (isset($result['orderNumber'])) {
             return $result['orderNumber'];
+        } else {
+            var_dump($this->currencyPair, $rate, $amount, $result);
         }
 
         return false;

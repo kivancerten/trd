@@ -120,7 +120,7 @@ class TradingClient
      */
     public function returnTradeHistory($currencyPair, $limit)
     {
-        return $this->query(['command' => 'returnTradeHistory', 'currencyPair' => $currencyPair, 'limit' => $limit]);
+        return $this->query(['start' => strtotime('-3 week'), 'command' => 'returnTradeHistory', 'currencyPair' => $currencyPair, 'limit' => $limit]);
     }
 
     /**
@@ -129,10 +129,11 @@ class TradingClient
      * @param float $amount
      * @param boolean $fillOrKill
      * @param boolean $immediateOrCancel
+     * @param boolean $postOnly
      * @return boolean|mixed
      * @throws \Exception
      */
-    public function buy($currencyPair, $rate, $amount, $fillOrKill = true, $immediateOrCancel = true)
+    public function buy($currencyPair, $rate, $amount, $fillOrKill = true, $immediateOrCancel = true, $postOnly = false)
     {
         return $this->query([
             'command' => 'buy',
@@ -140,7 +141,8 @@ class TradingClient
             'rate' => $rate,
             'amount' => $amount,
             'fillOrKill' => $fillOrKill ? '1' : '0',
-            'immediateOrCancel' => $immediateOrCancel ? '1' : '0'
+            'immediateOrCancel' => $immediateOrCancel ? '1' : '0',
+            'postOnly' => $postOnly ? '1' : '0',
         ]);
     }
 
@@ -150,18 +152,20 @@ class TradingClient
      * @param float $amount
      * @param boolean $fillOrKill
      * @param boolean $immediateOrCancel
+     * @param boolean $postOnly
      * @return boolean|mixed
      * @throws \Exception
      */
-    public function sell($currencyPair, $rate, $amount, $fillOrKill = true, $immediateOrCancel = true)
+    public function sell($currencyPair, $rate, $amount, $fillOrKill = true, $immediateOrCancel = true, $postOnly = false)
     {
         return $this->query([
-            'command' => 'buy',
+            'command' => 'sell',
             'currencyPair' => $currencyPair,
             'rate' => $rate,
             'amount' => $amount,
             'fillOrKill' => $fillOrKill ? '1' : '0',
-            'immediateOrCancel' => $immediateOrCancel ? '1' : '0'
+            'immediateOrCancel' => $immediateOrCancel ? '1' : '0',
+            'postOnly' => $postOnly ? '1' : '0',
         ]);
     }
 }
