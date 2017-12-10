@@ -2,7 +2,7 @@
 namespace TradingBot;
 
 define('BUY_PERCENT_LIMIT', 0.25);
-define('SELL_PERCENT_LIMIT', 0.25);
+define('SELL_PERCENT_LIMIT', 2);
 define('DRY_RUN', false);
 
 include_once 'secrets.php';
@@ -94,6 +94,7 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
 
     printLine('SellPrice', $sellPriceAsString);
     printLine('SellPriceWithFee', $sellPriceWithFeeAsString);
+    printLine('TargetProfit', SELL_PERCENT_LIMIT);
     printLine('ProfitPercent', $profitPercent);
 
     $sellAmount = round($counterCurrencyBalance, 6, PHP_ROUND_HALF_DOWN);
@@ -127,6 +128,7 @@ if ($tradingBot->getLastTradeType() == TradingBot::TRADE_TYPE_BUY) {
 
     printLine('BuyPrice', $buyPriceAsString);
     printLine('BuyPriceWithFee', $buyPriceWithFeeAsString);
+    printLine('TargetProfit', BUY_PERCENT_LIMIT);
     printLine('ProfitPercent', $profitPercent);
 
     $buyAmount = round($baseCurrencyBalance / $buyPrice, 4, PHP_ROUND_HALF_DOWN);
