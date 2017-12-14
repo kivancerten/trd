@@ -2,7 +2,7 @@
 namespace TradingBot;
 
 define('BUY_PERCENT_LIMIT', 0.25);
-define('SELL_PERCENT_LIMIT', 2);
+define('SELL_PERCENT_LIMIT', 0.25);
 define('DRY_RUN', false);
 
 include_once 'secrets.php';
@@ -63,7 +63,7 @@ exit;
 */
 
 
-$tradingBot = new TradingBot($tradingClient, 'USDT_BTC');
+$tradingBot = new TradingBot($tradingClient, 'BTC_LTC');
 
 echo 'Date: ' . date('c') . PHP_EOL;
 
